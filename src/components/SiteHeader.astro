@@ -40,6 +40,14 @@ const matrimonioLinks = [
         ))}
       </ul>
     </nav>
+
+    <a href="/finanzas/" class="finanzas-link" aria-label="Finanzas (acceso privado)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      <span>Finanzas</span>
+    </a>
   </div>
 
   {isMatrimonio && (
@@ -127,6 +135,35 @@ const matrimonioLinks = [
     pointer-events: none;
   }
 
+  /* ── Acceso discreto a Finanzas (privado) ── */
+  .finanzas-link {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 13px;
+    color: #f7f0d2;
+    opacity: 0.55;
+    font-family: "Playfair Display", serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    border: 1px solid rgba(247, 240, 210, 0.25);
+    border-radius: 20px;
+    transition: opacity 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .finanzas-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .finanzas-link:hover {
+    opacity: 1;
+    color: #d4af37;
+    border-color: #d4af37;
+  }
+
   /* ── Subnavegación matrimonio ── */
   .sub-nav {
     background: linear-gradient(to right, #f7e1a0, #efd07c);
@@ -190,6 +227,13 @@ const matrimonioLinks = [
     .nav-link {
       padding: 8px 12px;
       font-size: 13px;
+    }
+
+    .finanzas-link {
+      justify-self: center;
+      margin: 2px 0 8px;
+      padding: 4px 12px;
+      font-size: 12px;
     }
 
     .sub-nav-list {
