@@ -1,19 +1,8 @@
-<section id="dress" class="section card column">
-  <img
-    src="/images/pajaros.webp"
-    alt="Imagen de un pájaro"
-    id="florDress"
-  />
-  <div class="imageContainer">
-    <img
-      src="/images/moda.webp"
-      alt="Imagen de ropa"
-      class="icon"
-      width="50"
-      height="50"
-    />
-  </div>
-  <h2>Dress code</h2>
-  <h3>Formal, pero la novia da la libertad de usar vestido corto</h3>
-  <h3>¡Te queremos tirando pinta!</h3>
-</section>
+---
+import InfoCard from "./InfoCard.astro";
+---
+
+<InfoCard id="dress" icon="/images/moda.webp" title="Dress code">
+  <p>Formal, pero la novia da la libertad de usar vestido corto</p>
+  <p><strong>¡Te queremos tirando pinta!</strong></p>
+</InfoCard>

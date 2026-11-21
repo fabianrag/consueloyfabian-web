@@ -1,9 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Gallery from "../../components/Gallery.astro";
+import { photos } from "../../lib/photos";
 ---
 
-<BaseLayout title="Galería de Fotos">
-  <h1 class="main-title">Galería</h1>
-  <Gallery id="galeria-matri" title="Matrimonio" src="/data/gallery.json" />
+<BaseLayout title="Galería de fotos">
+  <header class="page-head">
+    <p class="eyebrow">Nuestro matrimonio</p>
+    <h1>Galería</h1>
+    <p>{photos.length} momentos · toca una foto para verla en grande</p>
+  </header>
+  <Gallery id="galeria-matri" items={photos} />
 </BaseLayout>

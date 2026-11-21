@@ -1,37 +1,60 @@
-<section id="llegar" class="section card column">
-  <img
-    src="/images/anillos-de-boda.png"
-    alt="Imagen de anillos de boda"
-    class="icon"
-    width="50"
-    height="50"
-  />
-  <h2>Cómo llegar</h2>
-  <div class="imageContainer">
+---
+import InfoCard from "./InfoCard.astro";
+---
+
+<InfoCard id="llegar" icon="/images/anillos-de-boda.png" title="Cómo llegar">
+  <p>Te guiará a nuestra ceremonia y recepción</p>
+  <div class="mapas">
     <a
       href="https://www.google.com/maps?q=-29.999435,-71.333555"
       target="_blank"
       rel="noopener noreferrer"
+      class="mapa"
+      aria-label="Abrir la ubicación en Google Maps (se abre en una pestaña nueva)"
     >
-      <img
-        src="/images/gmaps.png"
-        alt="Ícono de Google Maps"
-        class="icon"
-        height="50"
-      />
+      <img src="/images/gmaps.png" alt="" width="68" height="40" loading="lazy" />
     </a>
     <a
       href="https://waze.com/ul?ll=-29.999435,-71.333555&navigate=yes"
       target="_blank"
       rel="noopener noreferrer"
+      class="mapa"
+      aria-label="Abrir la ubicación en Waze (se abre en una pestaña nueva)"
     >
-      <img
-        src="/images/waze.webp"
-        alt="Ícono de Waze"
-        class="icon"
-        height="50"
-      />
+      <img src="/images/waze.webp" alt="" width="34" height="40" loading="lazy" />
     </a>
   </div>
-  <h3>Te guiará a nuestra ceremonia y recepción</h3>
-</section>
+</InfoCard>
+
+<style>
+  .mapas {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+
+  .mapa {
+    display: grid;
+    place-items: center;
+    width: 92px;
+    height: 64px;
+    background: #fff;
+    border: 1px solid rgba(31, 58, 107, 0.2);
+    border-radius: 14px;
+    transition:
+      transform 0.25s var(--ease),
+      border-color 0.2s,
+      box-shadow 0.25s;
+  }
+
+  .mapa img {
+    height: 40px;
+    width: auto;
+  }
+
+  .mapa:hover {
+    transform: translateY(-3px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 20px -12px rgba(31, 58, 107, 0.6);
+  }
+</style>

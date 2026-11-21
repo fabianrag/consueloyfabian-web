@@ -1,34 +1,45 @@
 ---
+import "../styles/global.css";
 import SiteHeader from "../components/SiteHeader.astro";
+import Ornament from "../components/Ornament.astro";
 
-const { title = "Consuelo y Fabián" } = Astro.props;
+const {
+  title = "Consuelo y Fabián",
+  description = "Boda de Consuelo y Fabián",
+} = Astro.props;
+
+const fullTitle =
+  title === "Consuelo y Fabián" ? title : `${title} · Consuelo y Fabián`;
+const fonts =
+  "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@400;500&display=swap";
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="Boda de Consuelo y Fabián" />
+    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
+    <meta name="theme-color" content="#0b1730" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{fullTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Playfair+Display:wght@400;600;700&display=swap"
-      rel="stylesheet"
-      media="print"
-      onload="this.media='all'"
-    />
+    <link href={fonts} rel="stylesheet" media="print" onload="this.media='all'" />
     <noscript>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Playfair+Display:wght@400;600;700&display=swap"
-        rel="stylesheet"
-      />
+      <link href={fonts} rel="stylesheet" />
     </noscript>
-    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <a href="#contenido-principal" class="skip-link">Saltar al contenido</a>
     <SiteHeader />
-    <slot />
+    <main id="contenido-principal">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <Ornament />
+      <p class="site-footer__names">Consuelo &amp; Fabián</p>
+      <p class="site-footer__meta">19 de octubre de 2024 · Coquimbo, Chile</p>
+    </footer>
   </body>
 </html>

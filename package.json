@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "gen:gallery": "node scripts/gen-gallery.mjs",
+    "predev": "npm run gen:gallery",
     "prebuild": "npm run gen:gallery",
     "build": "astro build",
     "dev": "astro dev"

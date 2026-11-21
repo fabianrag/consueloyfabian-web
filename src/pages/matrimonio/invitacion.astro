@@ -6,11 +6,84 @@ import DressCode from "../../components/DressCode.astro";
 import MenuComida from "../../components/MenuComida.astro";
 ---
 
-<BaseLayout title="Invitación de Boda">
+<BaseLayout title="Invitación de boda">
   <Invitation />
-  <img src="/images/Foto1.jpg" alt="Foto de los novios" class="section photo" />
-  <ComoLlegar />
-  <img src="/images/Foto2.jpg" alt="Foto de los novios" class="section photo" />
-  <DressCode />
-  <MenuComida />
+
+  <div class="novios">
+    <img src="/images/Foto1.jpg" alt="Consuelo y Fabián en un café" width="482" height="695" loading="lazy" />
+    <img src="/images/Foto2.jpg" alt="Consuelo y Fabián en la playa al atardecer" width="482" height="695" loading="lazy" />
+  </div>
+
+  <section class="detalles" aria-labelledby="detalles-titulo">
+    <img src="/images/pajaros.webp" alt="" class="detalles__pajaros" width="500" height="333" loading="lazy" />
+    <p class="eyebrow">Para ese día</p>
+    <h2 id="detalles-titulo" class="script">Detalles</h2>
+    <div class="detalles__grid">
+      <ComoLlegar />
+      <DressCode />
+      <MenuComida />
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .novios {
+    width: min(760px, 100% - 2.5rem);
+    margin: clamp(2rem, 6vw, 4rem) auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .novios img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 482 / 695;
+    object-fit: cover;
+    border: 3px solid var(--gold);
+    box-shadow: var(--shadow);
+  }
+
+  .novios img:first-child {
+    border-radius: 999px 999px var(--radius) var(--radius);
+  }
+
+  .novios img:last-child {
+    margin-top: clamp(1.5rem, 6vw, 3.5rem);
+    border-radius: var(--radius) var(--radius) 999px 999px;
+  }
+
+  .detalles {
+    width: var(--page);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .detalles__pajaros {
+    width: min(250px, 60%);
+    margin-bottom: 0.5rem;
+  }
+
+  .detalles > h2 {
+    margin: 0.3rem 0 clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(2.8rem, 8vw, 4rem);
+    color: var(--gold-200);
+  }
+
+  .detalles__grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  @media (max-width: 860px) {
+    .detalles__grid {
+      grid-template-columns: 1fr;
+      width: min(100%, 460px);
+    }
+  }
+</style>

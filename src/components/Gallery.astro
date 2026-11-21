@@ -1,15 +1,44 @@
 ---
-const {
-  title = "Galería",
-  id = "pswp-gallery",
-  src = "/data/gallery.json",
-} = Astro.props;
+import type { GalleryItem } from "../lib/photos";
+
+interface Props {
+  id?: string;
+  items: GalleryItem[];
+}
+
+const { id = "pswp-gallery", items } = Astro.props;
+
+// Las primeras filas se cargan de inmediato; el resto, al acercarse.
+const EAGER = 8;
 ---
 
 <section class="gallery-section">
-  {title && <h2>{title}</h2>}
-  <div id={id} class="thumbnail-grid pswp-gallery" data-gallery-id={id} data-gallery-src={src}>
-    <p class="gallery-loading">Cargando fotos…</p>
+  <div id={id} class="thumbnail-grid pswp-gallery">
+    {items.map((it, i) => {
+      const ratio = (it.width / it.height).toFixed(4);
+      const label = it.caption || `Foto ${i + 1} de ${items.length}`;
+      return (
+        <a
+          href={it.original}
+          style={`--r:${ratio}`}
+          data-pswp-width={it.width}
+          data-pswp-height={it.height}
+          data-pswp-srcset={`${it.thumbnail} 800w, ${it.original} ${it.width}w`}
+          aria-label={`Ampliar: ${label}`}
+        >
+          <img
+            src={it.thumbnail}
+            width={it.width}
+            height={it.height}
+            alt={label}
+            loading={i < EAGER ? "eager" : "lazy"}
+            decoding="async"
+            fetchpriority={i === 0 ? "high" : undefined}
+            class="thumbnail"
+          />
+        </a>
+      );
+    })}
   </div>
 </section>
 
@@ -17,133 +46,93 @@ const {
   import PhotoSwipeLightbox from "photoswipe/lightbox";
   import "photoswipe/style.css";
 
-  function buildAnchor(it: GalleryItem, i: number): HTMLAnchorElement {
-    const a = document.createElement("a");
-    a.href = it.original;
-    a.dataset.pswpWidth = String(it.width);
-    a.dataset.pswpHeight = String(it.height);
-    a.dataset.pswpSrcset = `${it.thumbnail} 800w, ${it.original} 1098w`;
-    a.dataset.pswpSizes = "(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 80vw";
-    a.dataset.pswpCaption = it.caption ?? "";
-    a.setAttribute("aria-label", it.alt ?? it.caption ?? `Foto ${i + 1}`);
-    a.dataset.orientation = it.width > it.height ? "landscape" : "portrait";
-
-    const img = document.createElement("img");
-    img.src = it.thumbnail;
-    img.alt = it.alt ?? it.caption ?? `Foto ${i + 1}`;
-    img.loading = i === 0 ? "eager" : "lazy";
-    if (i === 0) img.fetchPriority = "high";
-    img.decoding = i === 0 ? "sync" : "async";
-    img.className = "thumbnail";
-    img.srcset = `${it.thumbnail} 800w, ${it.original} 1098w`;
-    img.sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw";
-
-    a.appendChild(img);
-    return a;
-  }
-
-  function justify(container: HTMLElement, targetHeight: number) {
-    const links = Array.from(container.querySelectorAll<HTMLAnchorElement>("a[data-pswp-width]"));
-    const gap = 6;
-    const containerWidth = container.clientWidth;
-
-    let i = 0;
-    while (i < links.length) {
-      let j = i;
-      let totalAspect = 0;
-
-      while (j < links.length) {
-        const a = links[j];
-        const w = parseInt(a.dataset.pswpWidth!);
-        const h = parseInt(a.dataset.pswpHeight!);
-        totalAspect += w / h;
-        j++;
-        const filled = totalAspect * targetHeight + gap * (j - i - 1);
-        if (filled >= containerWidth) break;
-      }
-
-      const totalGaps = gap * (j - i - 1);
-      const rowHeight = Math.min((containerWidth - totalGaps) / totalAspect, targetHeight);
-
-      for (let k = i; k < j; k++) {
-        const a = links[k];
-        const w = parseInt(a.dataset.pswpWidth!);
-        const h = parseInt(a.dataset.pswpHeight!);
-        a.style.width = (w / h) * rowHeight + "px";
-        a.style.height = rowHeight + "px";
-      }
-
-      i = j;
-    }
-  }
-
-  interface GalleryItem {
-    original: string;
-    thumbnail: string;
-    width: number;
-    height: number;
-    caption?: string;
-    alt?: string;
-  }
-
-  async function initGallery(container: HTMLElement) {
-    const id = container.dataset.galleryId!;
-    const src = container.dataset.gallerySrc!;
-
-    const res = await fetch(src);
-    const items: GalleryItem[] = await res.json();
-
-    container.innerHTML = "";
-    const fragment = document.createDocumentFragment();
-    items.forEach((it, i) => fragment.appendChild(buildAnchor(it, i)));
-    container.appendChild(fragment);
-
-    const lb = new PhotoSwipeLightbox({
-      gallery: "#" + id,
+  document.querySelectorAll<HTMLElement>(".pswp-gallery").forEach((el) => {
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: el,
       children: "a",
       pswpModule: () => import("photoswipe"),
       showHideAnimationType: "zoom",
       wheelToZoom: true,
       preload: [1, 2],
       secondaryZoomLevel: 1.5,
+      bgOpacity: 0.94,
     });
-    lb.init();
-
-    const targetH = () => window.innerWidth < 600 ? 100 : window.innerWidth < 1024 ? 140 : 180;
-    justify(container, targetH());
-    window.addEventListener("resize", () => justify(container, targetH()));
-  }
-
-  document.querySelectorAll<HTMLElement>(".pswp-gallery[data-gallery-src]").forEach(initGallery);
+    lightbox.init();
+  });
 </script>
 
 <style>
-  .gallery-loading {
-    color: #888;
-    font-style: italic;
-    padding: 2rem 0;
+  .gallery-section {
+    width: min(1500px, 100% - 1.5rem);
+    margin: 0 auto;
   }
+
+  /* Mosaico justificado solo con CSS: cada foto crece en proporción a su
+     relación de aspecto, así todas las de una fila quedan con igual altura. */
   .thumbnail-grid {
+    --row: 230px;
+    --gap: 8px;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--gap);
   }
+
+  .thumbnail-grid::after {
+    content: "";
+    flex-grow: 1000000;
+  }
+
   .thumbnail-grid a {
+    position: relative;
     display: block;
     overflow: hidden;
-    border-radius: 8px;
-    flex-shrink: 0;
+    flex: var(--r) var(--r) calc(var(--r) * var(--row));
+    aspect-ratio: var(--r);
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--navy-700), var(--navy-800));
   }
+
+  .thumbnail-grid a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(234, 217, 164, 0);
+    transition: box-shadow 0.3s;
+    pointer-events: none;
+  }
+
+  .thumbnail-grid a:hover::after,
+  .thumbnail-grid a:focus-visible::after {
+    box-shadow: inset 0 0 0 2px var(--gold);
+  }
+
   .thumbnail {
     width: 100%;
     height: 100%;
     display: block;
     object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.7s var(--ease);
   }
-  .thumbnail:hover {
-    transform: scale(1.02);
+
+  .thumbnail-grid a:hover .thumbnail {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 1024px) {
+    .thumbnail-grid {
+      --row: 170px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .thumbnail-grid {
+      --row: 108px;
+      --gap: 5px;
+    }
+
+    .thumbnail-grid a {
+      border-radius: 6px;
+    }
   }
 </style>

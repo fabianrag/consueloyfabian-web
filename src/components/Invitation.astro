@@ -1,49 +1,137 @@
 ---
-const title = "¡Nos Casamos!";
+import Ornament from "./Ornament.astro";
+
+const title = "¡Nos casamos!";
 const bride = "Consuelo";
 const groom = "Fabián";
 ---
 
-<section id="invitacion" class="section column">
-  <div class="borderRadius column" id="bordeIntermedio">
-    <div class="borderRadius column" id="bordeInterno">
-      <div class="borderRadius column" id="contenido">
-        <img
-          src="/images/flor-superior-derecha.webp"
-          alt="Imagen de una flor"
-          id="florTR"
-        />
-        <img
-          src="/images/flor-inferior-izquierda.webp"
-          alt="Imagen de una flor"
-          id="florBL"
-        />
-        <h2>{title}</h2>
-        <div class="column" id="principalTitle">
-          <p>{bride}</p>
-          <p>y</p>
-          <p>{groom}</p>
-        </div>
-        <p id="subtitulo">
-          Solicitamos el honor de su presencia, junto a familiares y amigos, en
-          la ceremonia de nuestra boda.
-        </p>
-        <div class="flex" id="dateContainer">
-          <div class="gradient">
-            <p>SÁBADO</p>
-          </div>
-          <div id="dayContainer">
-            <p class="day1">19</p>
-            <p class="day2">06:30 PM</p>
-          </div>
-          <div class="gradient">
-            <p>OCTUBRE</p>
-          </div>
-        </div>
-        <h3>Centro de eventos Girasoles</h3>
-        <h3>Avenida Portugal Sur 2690, Coquimbo</h3>
-        <h2>Recepción posterior</h2>
-      </div>
+<section id="invitacion" class="paper">
+  <div class="paper__inner">
+    <img
+      src="/images/flor-superior-derecha.webp"
+      alt=""
+      class="paper__flor paper__flor--tr"
+      width="313"
+      height="288"
+    />
+    <img
+      src="/images/flor-inferior-izquierda.webp"
+      alt=""
+      class="paper__flor paper__flor--bl"
+      width="300"
+      height="300"
+    />
+    <p class="eyebrow">{title}</p>
+    <h1 class="inv__nombres script">
+      <span>{bride}</span>
+      <span class="inv__y">y</span>
+      <span>{groom}</span>
+    </h1>
+    <Ornament />
+    <p class="inv__texto">
+      Solicitamos el honor de su presencia, junto a familiares y amigos, en la
+      ceremonia de nuestra boda.
+    </p>
+
+    <div class="inv__fecha">
+      <p class="inv__lado">Sábado</p>
+      <p class="inv__dia">
+        <span class="inv__num">19</span>
+        <span class="inv__hora">06:30 PM</span>
+      </p>
+      <p class="inv__lado">Octubre</p>
     </div>
+
+    <p class="inv__lugar">Centro de eventos Girasoles</p>
+    <p class="inv__direccion">Avenida Portugal Sur 2690, Coquimbo</p>
+    <p class="inv__recepcion script">Recepción posterior</p>
   </div>
 </section>
+
+<style>
+  .inv__nombres {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0 1.25rem;
+    font-size: clamp(3.6rem, 15vw, 6rem);
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .inv__y {
+    font-size: 0.5em;
+    line-height: 1;
+    margin: -0.1em 0 0.05em;
+    color: var(--gold-700);
+  }
+
+  .inv__texto {
+    max-width: 32ch;
+    margin-top: 1.4rem;
+    font-size: clamp(1.15rem, 3.6vw, 1.35rem);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .inv__fecha {
+    width: 100%;
+    max-width: 460px;
+    margin: 2.25rem 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: clamp(0.75rem, 4vw, 1.5rem);
+    color: var(--ink);
+  }
+
+  .inv__lado {
+    padding: 0.7rem 0;
+    border-block: 1px solid var(--gold);
+    font-family: var(--font-sans);
+    font-size: clamp(0.72rem, 2.6vw, 0.9rem);
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-indent: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .inv__dia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .inv__num {
+    font-size: clamp(4rem, 16vw, 5.5rem);
+    font-weight: 500;
+    line-height: 0.9;
+    font-variant-numeric: lining-nums;
+  }
+
+  .inv__hora {
+    margin-top: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.22em;
+    color: var(--gold-700);
+    white-space: nowrap;
+  }
+
+  .inv__lugar {
+    font-size: clamp(1.35rem, 4.4vw, 1.65rem);
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .inv__direccion {
+    color: var(--ink-soft);
+  }
+
+  .inv__recepcion {
+    margin-top: 1.5rem;
+    font-size: clamp(2rem, 7vw, 2.6rem);
+    color: var(--gold-700);
+  }
+</style>

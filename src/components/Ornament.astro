@@ -1,0 +1,17 @@
+---
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={["ornament", className]}
+  viewBox="0 0 160 14"
+  width="160"
+  height="14"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M0 7h58M102 7h58" stroke="currentColor" stroke-width="1" fill="none"></path>
+  <path d="M80 1l6 6-6 6-6-6z" fill="currentColor"></path>
+  <circle cx="66" cy="7" r="1.6" fill="currentColor"></circle>
+  <circle cx="94" cy="7" r="1.6" fill="currentColor"></circle>
+</svg>
